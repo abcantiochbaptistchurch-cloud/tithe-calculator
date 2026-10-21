@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tithe Calculator | Antioch Baptist Church</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  html,body{margin:0;padding:0;background:transparent}
+  body{padding:8px}
+</style>
+</head>
+<body>
+<div class="tc-wrap" id="tithe-calculator">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&family=Oswald:wght@500;600&display=swap');
+
+  #tithe-calculator{
+    --tc-navy:#00006E;
+    --tc-blue:#2196FD;
+    --tc-red:#830518;
+    --tc-gold:#FAC04B;
+    --tc-cream:#FFFDEE;
+    --tc-onyx:#0A0A0A;
+    --tc-muted:#4a4a5a;
+    --tc-border:#d6d6ea;
+    font-family:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--tc-onyx);
+    background:var(--tc-cream);
+    max-width:760px;
+    margin:0 auto;
+    padding:24px 16px;
+    box-sizing:border-box;
+    line-height:1.45;
+    border-radius:12px;
+  }
+  #tithe-calculator *{box-sizing:border-box}
+  #tithe-calculator h2,#tithe-calculator h3{font-family:"Oswald","Barlow",Arial,sans-serif;color:var(--tc-navy);text-transform:uppercase;letter-spacing:.03em}
+  #tithe-calculator h2{text-align:center;margin:0 0 4px;font-size:2rem;font-weight:600}
+  #tithe-calculator h2::after{content:"";display:block;width:64px;height:4px;background:var(--tc-gold);margin:10px auto 0;border-radius:2px}
+  #tithe-calculator h3{margin:0 0 8px;font-size:1.2rem;font-weight:500}
+  #tithe-calculator p.tc-hint{color:var(--tc-muted);margin:0 0 14px;font-size:.95rem}
+  #tithe-calculator .tc-card{background:#fff;border:1px solid var(--tc-border);border-top:4px solid var(--tc-navy);border-radius:10px;padding:20px;margin:0 0 20px}
+  #tithe-calculator label{display:block;font-weight:700;margin:0 0 6px;color:var(--tc-onyx)}
+  #tithe-calculator .tc-field{margin:0 0 14px}
+  #tithe-calculator .tc-input-wrap{position:relative;max-width:260px}
+  #tithe-calculator .tc-input-wrap span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--tc-muted);pointer-events:none;font-weight:600}
+  #tithe-calculator input{
+    width:100%;font-family:inherit;font-size:1.1rem;padding:10px 12px 10px 26px;
+    border:1px solid var(--tc-border);border-radius:8px;color:var(--tc-onyx);background:#fff;
+  }
+  #tithe-calculator input.tc-pct{padding-left:12px;padding-right:30px}
+  #tithe-calculator .tc-input-wrap.tc-suffix span{left:auto;right:12px}
+  #tithe-calculator input:focus{outline:3px solid var(--tc-blue);outline-offset:1px;border-color:var(--tc-blue)}
+  #tithe-calculator .tc-table-scroll{overflow-x:auto;border-radius:8px}
+  #tithe-calculator table{width:100%;border-collapse:collapse;font-size:1rem;min-width:440px}
+  #tithe-calculator th,#tithe-calculator td{padding:11px 10px;text-align:right;border-bottom:1px solid var(--tc-border)}
+  #tithe-calculator thead th{background:var(--tc-navy);color:var(--tc-cream);font-weight:700;border-bottom:3px solid var(--tc-gold)}
+  #tithe-calculator th[scope=row],#tithe-calculator thead th:first-child{text-align:left}
+  #tithe-calculator tbody th{color:var(--tc-navy);font-weight:700}
+  #tithe-calculator tbody tr:nth-child(even){background:#fafaff}
+  #tithe-calculator tbody td:nth-child(2){font-weight:700;color:var(--tc-navy)}
+  #tithe-calculator .tc-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+  #tithe-calculator .tc-result{background:var(--tc-cream);border-left:4px solid var(--tc-gold);border-radius:8px;padding:12px}
+  #tithe-calculator .tc-result small{display:block;color:var(--tc-muted);font-size:.88rem}
+  #tithe-calculator .tc-result strong{font-family:"Oswald","Barlow",Arial,sans-serif;font-size:1.4rem;font-weight:500;color:var(--tc-navy)}
+  #tithe-calculator .tc-result strong.tc-short{color:var(--tc-red)}
+  #tithe-calculator .tc-note{font-size:.82rem;color:var(--tc-muted);text-align:center;margin:0}
+</style>
+
+  <h2>Tithe Calculator</h2>
+  <p class="tc-hint" style="text-align:center">Results update automatically as you type. Commas and dollar signs are fine.</p>
+
+  <!-- ---------- Part 1: Tithe amounts ---------- -->
+  <div class="tc-card">
+    <h3>What would my tithe be?</h3>
+    <div class="tc-field">
+      <label for="tc-income">Your annual income</label>
+      <div class="tc-input-wrap"><span>$</span>
+        <input id="tc-income" type="text" inputmode="decimal" autocomplete="off" placeholder="65,000">
+      </div>
+    </div>
+
+    <div class="tc-table-scroll" aria-live="polite">
+      <table>
+        <thead>
+          <tr><th scope="col">&nbsp;</th><th scope="col">Full tithe (10%)</th><th scope="col">½ tithe (5%)</th><th scope="col">¼ tithe (2.5%)</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Per year</th>
+            <td data-rate=".10" data-period="year">—</td><td data-rate=".05" data-period="year">—</td><td data-rate=".025" data-period="year">—</td></tr>
+          <tr><th scope="row">Per month</th>
+            <td data-rate=".10" data-period="month">—</td><td data-rate=".05" data-period="month">—</td><td data-rate=".025" data-period="month">—</td></tr>
+          <tr><th scope="row">Biweekly<br><small style="font-weight:400;color:var(--tc-muted)">every 2 weeks</small></th>
+            <td data-rate=".10" data-period="biweek">—</td><td data-rate=".05" data-period="biweek">—</td><td data-rate=".025" data-period="biweek">—</td></tr>
+          <tr><th scope="row">Per week</th>
+            <td data-rate=".10" data-period="week">—</td><td data-rate=".05" data-period="week">—</td><td data-rate=".025" data-period="week">—</td></tr>
+          <tr><th scope="row">Per day</th>
+            <td data-rate=".10" data-period="day">—</td><td data-rate=".05" data-period="day">—</td><td data-rate=".025" data-period="day">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ---------- Part 2: Current giving vs. goal ---------- -->
+  <div class="tc-card">
+    <h3>How does my current giving compare?</h3>
+    <p class="tc-hint">Income carries over from above; you can change it here.</p>
+
+    <div class="tc-field">
+      <label for="tc-g-income">Your annual income</label>
+      <div class="tc-input-wrap"><span>$</span>
+        <input id="tc-g-income" type="text" inputmode="decimal" autocomplete="off" placeholder="65,000">
+      </div>
+    </div>
+    <div class="tc-field">
+      <label for="tc-g-given">Your annual giving</label>
+      <div class="tc-input-wrap"><span>$</span>
+        <input id="tc-g-given" type="text" inputmode="decimal" autocomplete="off" placeholder="3,000">
+      </div>
+    </div>
+    <div class="tc-field">
+      <label for="tc-g-goal">Your giving goal (% of income)</label>
+      <div class="tc-input-wrap tc-suffix"><span>%</span>
+        <input id="tc-g-goal" class="tc-pct" type="text" inputmode="decimal" autocomplete="off" placeholder="10" value="10">
+      </div>
+    </div>
+
+    <div class="tc-results" aria-live="polite">
+      <div class="tc-result"><small>Current giving as % of income</small><strong id="tc-out-pct">—</strong></div>
+      <div class="tc-result"><small>Goal amount per year</small><strong id="tc-out-goal">—</strong></div>
+      <div class="tc-result"><small id="tc-out-diff-label">Difference</small><strong id="tc-out-diff">—</strong></div>
+    </div>
+  </div>
+
+  <p class="tc-note">Amounts are rounded to the nearest cent and are estimates for planning only. Biweekly assumes 26 pay periods per year.</p>
+
+<script>
+(function () {
+  var root = document.getElementById('tithe-calculator');
+  if (!root) return;
+
+  var money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+  var pctFmt = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+  var PERIODS = { year: 1, month: 12, biweek: 26, week: 52, day: 365 };
+
+  // Accepts "65,000", "$65000.50", " 65 000 " etc. Returns NaN when empty/invalid.
+  function parse(v) {
+    var cleaned = String(v || '').replace(/[^0-9.]/g, '');
+    if (cleaned === '') return NaN;
+    var n = parseFloat(cleaned);
+    return isFinite(n) ? n : NaN;
+  }
+  function cents(n) { return Math.round(n * 100) / 100; }
+  function $(id) { return root.querySelector('#' + id); }
+
+  // ---- Part 1 ----
+  var income = $('tc-income');
+  var cells = root.querySelectorAll('td[data-rate]');
+
+  function updateTithe() {
+    var inc = parse(income.value);
+    for (var i = 0; i < cells.length; i++) {
+      var c = cells[i];
+      var rate = parseFloat(c.getAttribute('data-rate'));
+      var div = PERIODS[c.getAttribute('data-period')];
+      c.textContent = isNaN(inc) ? '—' : money.format(cents(inc * rate / div));
+    }
+  }
+
+  // ---- Part 2 ----
+  var gIncome = $('tc-g-income'), gGiven = $('tc-g-given'), gGoal = $('tc-g-goal');
+  var outPct = $('tc-out-pct'), outGoal = $('tc-out-goal');
+  var outDiff = $('tc-out-diff'), outDiffLabel = $('tc-out-diff-label');
+  var keepInSync = true; // stop copying income down once the user edits it in Part 2
+
+  function updateGiving() {
+    var inc = parse(gIncome.value), given = parse(gGiven.value), goal = parse(gGoal.value);
+
+    outPct.textContent = (inc > 0 && !isNaN(given)) ? pctFmt.format(given / inc * 100) + '%' : '—';
+
+    var goalAmt = (inc > 0 && !isNaN(goal)) ? inc * goal / 100 : NaN;
+    outGoal.textContent = isNaN(goalAmt) ? '—' : money.format(cents(goalAmt));
+
+    outDiff.className = '';
+    if (!isNaN(goalAmt) && !isNaN(given)) {
+      var diff = cents(goalAmt - given);
+      if (diff > 0) {
+        outDiffLabel.textContent = 'Still needed to reach goal';
+        outDiff.textContent = money.format(diff);
+        outDiff.className = 'tc-short';
+      } else if (diff < 0) {
+        outDiffLabel.textContent = 'Above your goal by';
+        outDiff.textContent = money.format(-diff);
+      } else {
+        outDiffLabel.textContent = 'Difference';
+        outDiff.textContent = 'Goal met';
+      }
+    } else {
+      outDiffLabel.textContent = 'Difference';
+      outDiff.textContent = '—';
+    }
+  }
+
+  // 'input' fires on every keystroke, so results appear while the visitor types
+  income.addEventListener('input', function () {
+    updateTithe();
+    if (keepInSync) { gIncome.value = income.value; updateGiving(); }
+  });
+  gIncome.addEventListener('input', function () { keepInSync = false; updateGiving(); });
+  gGiven.addEventListener('input', updateGiving);
+  gGoal.addEventListener('input', updateGiving);
+
+  updateTithe();
+  updateGiving();
+})();
+</script>
+</div>
+<!-- =================== END ANTIOCH TITHE CALCULATOR =================== -->
+
+
+<!-- Reports this page's height to the parent page so the iframe can size itself.
+     Harmless if the parent page doesn't listen for it. -->
+<script>
+(function () {
+  var el = document.getElementById('tithe-calculator');
+  var last = 0;
+  function send() {
+    if (!el || window.parent === window) return;
+    var h = Math.ceil(el.getBoundingClientRect().height) + 16; // + body padding
+    if (h !== last) {
+      last = h;
+      window.parent.postMessage({ type: 'antioch-tithe-height', height: h }, '*');
+    }
+  }
+  window.addEventListener('load', send);
+  window.addEventListener('resize', send);
+  if (window.ResizeObserver) new ResizeObserver(send).observe(el);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(send);
+  send();
+})();
+</script>
+</body>
+</html>
